@@ -1,11 +1,19 @@
 # DAEO Solver with Optima Tracking
 
-Solve equations of the form 
+Solve equations of the form
+
 $$
-    x(0, x) = x_0\\
-    x'(t, x, y) = f(t, x, y)\\
-    y(t) ∈ \argmin_y h(x, y)
+x(0, x) = x_0
 $$
+
+$$
+x'(t, x, y) = f(t, x, y)
+$$
+
+$$
+y(t) ∈ \texttt{argmin}_y h(x, y)
+$$
+
 by tracking all possible local optima $y_i$ of the objective function $h$.
 
 ## Build Guide
