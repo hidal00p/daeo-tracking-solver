@@ -7,6 +7,7 @@ project(
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # project structure settings
@@ -50,6 +51,7 @@ add_compile_definitions(
 
 # get boost interval from the submodule
 include_directories(interval/include)
+include_directories($ENV{EIGEN_LIB})
 
 set(objective_headers src/solver/objective.hpp)
 set(bnb_solver_headers src/solver/global_optimizer.hpp src/solver/logging.hpp)
@@ -57,24 +59,24 @@ set(daeo_solver_headers src/solver/daeo_solver.hpp src/solver/xprime.hpp)
 
 get_target_property(NAG_dco_cpp_INCLUDE_DIRS NAG::dco_cpp INTERFACE_INCLUDE_DIRECTORIES)
 
-add_executable(prototype src/idea_prototypes.cpp 
-  ${objective_headers} 
-  ${bnb_solver_headers} 
-  ${daeo_solver_headers})
-target_include_directories(prototype PUBLIC src/include ${NAG_dco_cpp_INCLUDE_DIRS})
-target_link_libraries(prototype PRIVATE NAG::dco_cpp fmt::fmt)
-
-add_executable(optimizer src/bnb-optimizer-demo.cpp 
-  ${objective_headers} 
-  ${bnb_solver_headers} 
-  ${daeo_solver_headers})
-target_include_directories(optimizer PUBLIC src/include ${NAG_dco_cpp_INCLUDE_DIRS})
-target_link_libraries(optimizer PRIVATE NAG::dco_cpp fmt::fmt)
-
 add_executable(ad2024 src/ad2024-demo.cpp ${objective_headers} ${bnb_solver_headers} ${daeo_solver_headers})
 target_include_directories(ad2024 PUBLIC src/include ${NAG_dco_cpp_INCLUDE_DIRS})
 target_link_libraries(ad2024 PRIVATE NAG::dco_cpp fmt::fmt)
 
-add_executable(main src/main.cpp ${bnb_solver_headers})
-target_include_directories(main PUBLIC src/include ${NAG_dco_cpp_INCLUDE_DIRS})
-target_link_libraries(main PRIVATE NAG::dco_cpp fmt::fmt)
+# add_executable(prototype src/idea_prototypes.cpp
+#   ${objective_headers}
+#   ${bnb_solver_headers}
+#   ${daeo_solver_headers})
+# target_include_directories(prototype PUBLIC src/include ${NAG_dco_cpp_INCLUDE_DIRS})
+# target_link_libraries(prototype PRIVATE NAG::dco_cpp fmt::fmt)
+# 
+# add_executable(optimizer src/bnb-optimizer-demo.cpp
+#   ${objective_headers}
+#   ${bnb_solver_headers}
+#   ${daeo_solver_headers})
+# target_include_directories(optimizer PUBLIC src/include ${NAG_dco_cpp_INCLUDE_DIRS})
+# target_link_libraries(optimizer PRIVATE NAG::dco_cpp fmt::fmt)
+
+# add_executable(main src/main.cpp ${bnb_solver_headers})
+# target_include_directories(main PUBLIC src/include ${NAG_dco_cpp_INCLUDE_DIRS})
+# target_link_libraries(main PRIVATE NAG::dco_cpp fmt::fmt)

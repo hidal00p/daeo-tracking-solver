@@ -283,7 +283,7 @@ public:
                         Eigen::Vector<YT, YDIMS_EXT> const &y_ext,
                         Eigen::Vector<T, PDIMS> const &p) const
       -> decltype(m_objective(t, x, y_ext, p)) {
-    using Eigen::seq, Eigen::last;
+    using Eigen::seq, Eigen::placeholders::last;
     n_L_evaluations += 1;
     return m_objective(t, x, y_ext(seq(1, last)), p) +
            y_ext(0) * m_constraint(t, x, y_ext(seq(1, last)), p);

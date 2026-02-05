@@ -69,7 +69,7 @@ template <typename T, int DIMS, typename P = suggested_interval_policies<T>>
 Eigen::Vector<boost::numeric::interval<T, P>, DIMS>
 build_box(Eigen::Vector<T, DIMS> const &ll, Eigen::Vector<T, DIMS> const &ur) {
   Eigen::Vector<boost::numeric::interval<T, P>, DIMS> res(ll.rows());
-  for (size_t i = 0; i < ll.rows(); i++) {
+  for (size_t i = 0; i < (size_t)ll.rows(); i++) {
     res(i).set(ll(i), ur(i));
   }
   return res;

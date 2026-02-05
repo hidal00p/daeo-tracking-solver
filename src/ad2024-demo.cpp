@@ -23,9 +23,9 @@ int main(int argc, char **argv) {
     return (pow(x(0) - y(0), 2) + sin(p(0) * y(0)));
   };
 
-  auto f = [](auto t, auto const &x, auto const &y, auto const &p) {
-    return xprime(t, x, y, p);
-  };
+  // auto f = [](auto t, auto const &x, auto const &y, auto const &p) {
+  //   return xprime(t, x, y, p);
+  // };
 
   GlobalOptimizerSettings<double> gopt_settings;
   gopt_settings.MODE = FIND_ALL_LOCAL_MINIMIZERS;

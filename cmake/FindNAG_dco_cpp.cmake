@@ -52,6 +52,7 @@ if(NOT(NAG_dco_cpp_DIR))
     $ENV{HOME}/git/dco_cpp_dev
     $ENV{HOME}/mygit/dco_cpp_dev
     $ENV{HOME}/Software/dco_cpp_dev
+    $ENV{DCO_LIB}
     PATH_SUFFIXES src include)
 
   # Set path if include dir was found otherwise try to find dco/c++ in other
