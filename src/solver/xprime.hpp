@@ -30,7 +30,7 @@ template <typename FN> class WrappedXPrimeFunction {
   FN const m_fn;
 
   template <typename T, typename X, typename Y, int XDIMS, int YDIMS, int PDIMS>
-    requires YieldsEigenVec<FN, T, X, Y, XDIMS, YDIMS, PDIMS>
+  requires YieldsEigenVec<FN, T, X, Y, XDIMS, YDIMS, PDIMS>
   auto xprime_value(T t, Eigen::Vector<X, XDIMS> const &x,
                     Eigen::Vector<Y, YDIMS> const &y,
                     Eigen::Vector<T, PDIMS> const &p) const {
@@ -38,7 +38,7 @@ template <typename FN> class WrappedXPrimeFunction {
   }
 
   template <typename T, typename X, typename Y, int XDIMS, int YDIMS, int PDIMS>
-    requires YieldsEigenVec<FN, T, X, Y, XDIMS, YDIMS, PDIMS>
+  requires YieldsEigenVec<FN, T, X, Y, XDIMS, YDIMS, PDIMS>
   auto jacobian_x(T t, Eigen::Vector<X, XDIMS> const &x,
                   Eigen::Vector<Y, YDIMS> const &y,
                   Eigen::Vector<T, PDIMS> const &p) const

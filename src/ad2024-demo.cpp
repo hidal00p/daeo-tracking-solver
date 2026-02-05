@@ -1,6 +1,6 @@
 #include <cmath>
+
 #include <fmt/core.h>
-#include <numbers>
 
 #include "Eigen/Dense"
 
@@ -18,8 +18,8 @@ int main(int argc, char **argv) {
 
   using boost::numeric::median;
 
-  auto h = [](const auto t, const auto &x, const auto &y,
-              const auto &p) -> auto {
+  auto h =
+      [](const auto t, const auto &x, const auto &y, const auto &p) -> auto{
     return (pow(x(0) - y(0), 2) + sin(p(0) * y(0)));
   };
 

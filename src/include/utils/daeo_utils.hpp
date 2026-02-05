@@ -29,8 +29,6 @@ template <int DIMS_IN, int DIMS_OUT>
 inline constexpr int propagate_dynamic_v =
     propagate_dynamic<DIMS_IN, DIMS_OUT>::value;
 
-
-
 /**
  * NTuple type, for the lazy programmer in me.
  */

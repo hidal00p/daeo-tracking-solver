@@ -22,27 +22,30 @@ struct is_boost_interval<boost::numeric::interval<T, POLICIES>>
     : std::true_type {};
 
 template <typename T, int ROWS, int COLS>
-struct is_boost_interval<Eigen::Matrix<T, ROWS, COLS>> : is_boost_interval<T> {};
+struct is_boost_interval<Eigen::Matrix<T, ROWS, COLS>> : is_boost_interval<T> {
+};
 
 template <typename T>
 concept IsInterval = is_boost_interval<T>::value;
 
 template <typename FN, typename T, typename X, typename Y, int XDIMS, int YDIMS,
           int PDIMS>
-concept PreservesIntervalsX =
-    (!IsInterval<X>) || requires(FN f, T t, Eigen::Vector<X, XDIMS> const &x,
-                                 Eigen::Vector<Y, YDIMS> const &y,
-                                 Eigen::Vector<T, PDIMS> const &p) {
-      { f(t, x, y, p) } -> IsInterval;
-    };
+concept PreservesIntervalsX = (!IsInterval<X>) ||
+                              requires(FN f, T t,
+                                       Eigen::Vector<X, XDIMS> const &x,
+                                       Eigen::Vector<Y, YDIMS> const &y,
+                                       Eigen::Vector<T, PDIMS> const &p) {
+  { f(t, x, y, p) } -> IsInterval;
+};
 template <typename FN, typename T, typename X, typename Y, int XDIMS, int YDIMS,
           int PDIMS>
-concept PreservesIntervalsY =
-    (!IsInterval<Y>) || requires(FN f, T t, Eigen::Vector<X, XDIMS> const &x,
-                                 Eigen::Vector<Y, YDIMS> const &y,
-                                 Eigen::Vector<T, PDIMS> const &p) {
-      { f(t, x, y, p) } -> IsInterval;
-    };
+concept PreservesIntervalsY = (!IsInterval<Y>) ||
+                              requires(FN f, T t,
+                                       Eigen::Vector<X, XDIMS> const &x,
+                                       Eigen::Vector<Y, YDIMS> const &y,
+                                       Eigen::Vector<T, PDIMS> const &p) {
+  { f(t, x, y, p) } -> IsInterval;
+};
 
 template <typename FN, typename T, typename X, typename Y, int XDIMS, int YDIMS,
           int PDIMS>
@@ -81,7 +84,7 @@ public:
    */
   template <typename NUMERIC_T, typename XT, typename YT, int XDIMS, int YDIMS,
             int PDIMS>
-    requires PreservesIntervals<FN, NUMERIC_T, XT, YT, XDIMS, YDIMS, PDIMS>
+  requires PreservesIntervals<FN, NUMERIC_T, XT, YT, XDIMS, YDIMS, PDIMS>
   auto objective_value(NUMERIC_T const t, Eigen::Vector<XT, XDIMS> const &x,
                        Eigen::Vector<YT, YDIMS> const &y,
                        Eigen::Vector<NUMERIC_T, PDIMS> const &p) const
@@ -171,7 +174,7 @@ public:
     Eigen::Matrix<Y_ACTIVE_T, YDIMS, YDIMS> d2hdy2(y.rows(), y.rows());
     for (int hrow = 0; hrow < y.rows(); hrow++) {
       dco::derivative(dco::value(y_active(hrow))) = 1; // wiggle y[hrow]
-      h_active = fn(t, x, y_active, p);        // compute h
+      h_active = fn(t, x, y_active, p);                // compute h
       dco::value(dco::derivative(h_active)) = 1;
       tape->interpret_adjoint_and_reset_to(start_position);
       for (int hcol = 0; hcol < y.rows(); hcol++) {
@@ -209,9 +212,9 @@ public:
     }
     Eigen::Matrix<XY_ACTIVE_T, XDIMS, YDIMS> ddxddy(x.rows(), y.rows());
     for (int i = 0; i < x_active.rows(); i++) {
-      dco::derivative(dco::value(x_active(i))) = 1;    // wiggle x(i)
-      h_active = fn(t, x_active, y_active, p); // compute h
-      dco::value(dco::derivative(h_active)) = 1;       // sensitivity to h is 1
+      dco::derivative(dco::value(x_active(i))) = 1; // wiggle x(i)
+      h_active = fn(t, x_active, y_active, p);      // compute h
+      dco::value(dco::derivative(h_active)) = 1;    // sensitivity to h is 1
       tape->interpret_adjoint();
       // harvest derivative
       for (int j = 0; j < ddxddy.rows(); j++) {
@@ -268,7 +271,7 @@ template <typename F, typename G> class DAEOWrappedConstrained {
   // return a passive numerical value"
 public:
   template <typename T, typename XT, typename YT, int YDIMS, int PDIMS>
-    requires PreservesIntervals<F, T, XT, YT, 1, YDIMS, PDIMS>
+  requires PreservesIntervals<F, T, XT, YT, 1, YDIMS, PDIMS>
   auto objective_value(T const t, XT const x, Eigen::Vector<YT, YDIMS> const &y,
                        Eigen::Vector<T, PDIMS> const &p) const
       -> decltype(m_objective(t, x, y, p)) {
@@ -277,8 +280,8 @@ public:
   }
 
   template <typename T, typename XT, typename YT, int YDIMS_EXT, int PDIMS>
-    requires PreservesIntervals<F, T, XT, YT, 1, YDIMS_EXT, PDIMS> &&
-                 PreservesIntervals<G, T, XT, YT, 1, YDIMS_EXT, PDIMS>
+  requires PreservesIntervals<F, T, XT, YT, 1, YDIMS_EXT, PDIMS> &&
+      PreservesIntervals<G, T, XT, YT, 1, YDIMS_EXT, PDIMS>
   auto lagrangian_value(T const t, XT const x,
                         Eigen::Vector<YT, YDIMS_EXT> const &y_ext,
                         Eigen::Vector<T, PDIMS> const &p) const

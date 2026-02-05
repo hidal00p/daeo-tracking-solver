@@ -141,10 +141,9 @@ public:
    */
   template <typename T, std::ranges::range Y, std::ranges::range DHDY,
             std::ranges::range DDHDDY_ROWS>
-  void log_hessian_test(sys_time_point_t time, size_t tasknum,
-                        size_t testres, Y const &y, T const &h,
-                        DHDY const &dhdy, DDHDDY_ROWS &d2hdy2,
-                        size_t threadid = 0) {
+  void log_hessian_test(sys_time_point_t time, size_t tasknum, size_t testres,
+                        Y const &y, T const &h, DHDY const &dhdy,
+                        DDHDDY_ROWS &d2hdy2, size_t threadid = 0) {
     std::chrono::duration<double, std::micro> deltaT = time - m_logging_start;
     fmt::print(outs[threadid], LOG_TNUM_TSTAMP, tasknum, deltaT);
     fmt::print(outs[threadid], LOG_EID_EXTRA, HESSIAN_TEST, testres);

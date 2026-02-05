@@ -20,8 +20,8 @@
 #include "fmt/ranges.h"
 
 #include "global_optimizer.hpp"
-#include "xprime.hpp"
 #include "utils/daeo_utils.hpp"
+#include "xprime.hpp"
 
 using std::vector;
 
@@ -189,10 +189,11 @@ public:
           fmt::println("  Reordering optima to match {:::.4e}", from_opt.y);
           if (m_settings.LINEARIZE_OPTIMIZER_DRIFT) {
             vector<NUMERIC_T> neighborhoods(from_opt.n_local_optima());
-            std::transform(from_opt.y.begin(), from_opt.y.end(),
-                           neighborhoods.begin(), [&](const auto &y) -> auto {
-                             return drift(from_opt.t, from_opt.x, y, params);
-                           });
+            std::transform(
+                from_opt.y.begin(), from_opt.y.end(),
+                neighborhoods.begin(), [&](const auto &y) -> auto{
+                  return drift(from_opt.t, from_opt.x, y, params);
+                });
             next = correct_optimizer_permutation(from_opt, next, neighborhoods);
           } else {
             next = correct_optimizer_permutation(
@@ -204,10 +205,11 @@ public:
           fmt::println("  Reordered optima to match {:::.4e}", next.y);
           if (m_settings.LINEARIZE_OPTIMIZER_DRIFT) {
             vector<NUMERIC_T> neighborhoods(from_opt.n_local_optima());
-            std::transform(from_opt.y.begin(), from_opt.y.end(),
-                           neighborhoods.begin(), [&](const auto &y) -> auto {
-                             return drift(from_opt.t, from_opt.x, y, params);
-                           });
+            std::transform(
+                from_opt.y.begin(), from_opt.y.end(),
+                neighborhoods.begin(), [&](const auto &y) -> auto{
+                  return drift(from_opt.t, from_opt.x, y, params);
+                });
             from_opt =
                 correct_optimizer_permutation(next, from_opt, neighborhoods);
           } else {
